@@ -1,0 +1,22 @@
+{
+  "name": "asf_testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:donation": "playwright test tests/donation.spec.ts",
+    "test:executive": "playwright test tests/executive-donation.spec.ts",
+    "test:headed": "HEADLESS=false playwright test",
+    "test:report": "playwright show-report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^26.6.5",
+    "dotenv": "^18.0.7"
+  }
+}
