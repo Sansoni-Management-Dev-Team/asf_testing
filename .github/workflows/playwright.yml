@@ -31,12 +31,6 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Run donation test
         run: npm run test:donation -- --repeat-each="$REPEAT_EACH"
-      - uses: actions/upload-artifact@v7
-        if: ${{ always() }}
-        with:
-          name: playwright-report-donation
-          path: playwright-report/
-          retention-days: 30
 
   executive:
     timeout-minutes: 20
@@ -53,9 +47,3 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Run executive donation test
         run: npm run test:executive -- --repeat-each="$REPEAT_EACH"
-      - uses: actions/upload-artifact@v7
-        if: ${{ always() }}
-        with:
-          name: playwright-report-executive
-          path: playwright-report/
-          retention-days: 30

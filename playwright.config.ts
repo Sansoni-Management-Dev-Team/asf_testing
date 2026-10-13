@@ -26,8 +26,8 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  /* On CI: per-test progress in the log, GitHub annotations for failures, plus the HTML report artifact. */
-  reporter: process.env.CI ? [['list'], ['github'], ['html', { open: 'never' }]] : 'html',
+  /* On CI: per-test progress in the log and GitHub annotations for failures. */
+  reporter: process.env.CI ? [['list'], ['github']] : 'html',
   /* The flow spans our site and Stripe Checkout, so allow more than the 30s default. */
   timeout: 90_000,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
