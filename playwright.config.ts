@@ -21,12 +21,15 @@ export default defineConfig({
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  /* No retries: CI runs use --repeat-each to measure reliability, and retries would mask flaky runs. */
+  retries: 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  /* On CI: per-test progress in the log, GitHub annotations for failures, plus the HTML report artifact. */
+  reporter: process.env.CI ? [['list'], ['github'], ['html', { open: 'never' }]] : 'html',
+  /* The flow spans our site and Stripe Checkout, so allow more than the 30s default. */
+  timeout: 90_000,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
@@ -35,8 +38,8 @@ export default defineConfig({
     /* Run headless unless HEADLESS=false. */
     headless: process.env.HEADLESS !== 'false',
 
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    /* Keep a trace for every failed attempt. See https://playwright.dev/docs/trace-viewer */
+    trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
   },
 
