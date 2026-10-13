@@ -53,6 +53,9 @@ export async function donate(page: Page, path: string, donor: Donor) {
     await page.getByRole('textbox', { name: 'Cardholder name' }).fill(`${donor.firstName} ${donor.lastName}`);
     // Stripe picks a default country from the runner's location; pin it so the test is stable.
     await page.getByRole('combobox', { name: 'Country or region' }).selectOption({ label: card.country });
+    // In some regions (e.g. US CI runners) Stripe pre-ticks "Save my information with Link",
+    // which adds a required phone number field and blocks the payment. Always opt out.
+    await page.getByRole('checkbox', { name: /Save my information/ }).setChecked(false);
 
     await page.getByTestId('hosted-payment-submit-button').click();
   });
