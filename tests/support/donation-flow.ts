@@ -43,7 +43,8 @@ export async function donate(page: Page, path: string, donor: Donor) {
   });
 
   await test.step('pay on Stripe Checkout', async () => {
-    await expect(page).toHaveURL(/checkout\.stripe\.com/);
+    // The redirect waits on our server creating a Stripe session, which can exceed the 5s default.
+    await expect(page).toHaveURL(/checkout\.stripe\.com/, { timeout: 30_000 });
     await expect(page.getByText(`Donation – ${donor.group}`)).toBeVisible();
     await expect(page.getByText(displayedAmount).first()).toBeVisible();
 
