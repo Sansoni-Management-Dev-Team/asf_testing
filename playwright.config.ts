@@ -23,11 +23,11 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   /* No retries: CI runs use --repeat-each to measure reliability, and retries would mask flaky runs. */
   retries: 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  /* On CI: one worker per vCPU on each sharded runner. Locally: Playwright default (half the cores). */
+  workers: process.env.CI ? '100%' : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  /* On CI: per-test progress in the log and GitHub annotations for failures. */
-  reporter: process.env.CI ? [['list'], ['github']] : 'html',
+  /* On CI: per-test progress in the log, GitHub annotations for failures, and a blob report per shard for merge-reports. */
+  reporter: process.env.CI ? [['list'], ['github'], ['blob']] : 'html',
   /* The flow spans our site and Stripe Checkout, so allow more than the 30s default. */
   timeout: 90_000,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
